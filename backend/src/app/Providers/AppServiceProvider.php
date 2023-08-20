@@ -12,6 +12,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'lang');
     }
 
     /**

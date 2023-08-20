@@ -11,10 +11,6 @@ class APIRequest extends FormRequest
 {
     protected function failedValidation(Validator $validator)
     {
-        if (substr($this->path(), 0, 4) !== 'api/') {
-            parent::failedValidation($validator);
-        }
-
         throw new HttpResponseException(
             response()->json(
                 [

@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +27,21 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        switch (get_class($e)) {
+            case 'Symfony\Component\Routing\Exception\RouteNotFoundException':
+                $response = [
+                    'code' => Response::HTTP_NOT_FOUND,
+                    'message' => 'Ресурс не найден'
+                ];
+                break;
+            default:
+                $response = parent::render($request, $e);
+                break;
+        }
+        return  $response;
     }
 }

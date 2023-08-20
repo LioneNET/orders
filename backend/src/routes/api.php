@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\LoginController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,13 +17,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// Роуты без авторизации
-Route::group(['middleware' => ['api'],], function () {
+Route::group(['middleware' => ['api']], function () {
     Route::prefix('v1')->group(function () {
+        Route::group(['middleware' => ['auth:sanctum']], function () {
+            Route::apiResource('product', ProductController::class)->only(['index', 'show']);
+            Route::apiResource('cart', CartController::class);
+            Route::get('total', [CartController::class, 'total']);
+            Route::get('total-all', [CartController::class, 'totalAll']);
+            Route::post('order/add', [OrderController::class, 'addOrder']);
+            Route::get('order/list', [OrderController::class, 'getList']);
+            Route::get('order/total', [OrderController::class, 'getTotal']);
+            Route::delete('order/{order}/delete', [OrderController::class, 'deleteOrder']);
+        });
+
         Route::post('create_token', [LoginController::class, 'login']);
     });
 });
