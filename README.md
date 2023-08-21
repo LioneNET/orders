@@ -38,5 +38,5 @@
 
 ## postman
 
-Для тестирования aip в проект добавлен файл `testovoe.postman_collection` в нем же описаны основные запросы на api
+Для тестирования aip в проект добавлен файл `orders.postman_collection.json` в нем же описаны основные запросы на api
 Провести настройку `Variables`
