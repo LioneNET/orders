@@ -32,16 +32,24 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         switch (get_class($e)) {
-            case 'Symfony\Component\Routing\Exception\RouteNotFoundException':
-                $response = [
-                    'code' => Response::HTTP_NOT_FOUND,
-                    'message' => 'Ресурс не найден'
-                ];
+            case 'Illuminate\Auth\AuthenticationException':
+                $message = $e->getMessage();
+                $statusCode = Response::HTTP_UNAUTHORIZED;
                 break;
             default:
-                $response = parent::render($request, $e);
+                $message = $e->getMessage();
+                $statusCode = Response::HTTP_I_AM_A_TEAPOT;
                 break;
         }
-        return  $response;
+        return response()->json(
+            [
+                'errors' => [
+                    'messages' => [
+                        $message,
+                    ],
+                ],
+            ],
+            $statusCode
+        );
     }
 }
