@@ -18,4 +18,9 @@ class LoginController extends Controller
     {
         return UserTokenResource::make(UserService::auth($request->validated()));
     }
+
+    public function failed()
+    {
+        return response()->json(['access' => false]);
+    }
 }

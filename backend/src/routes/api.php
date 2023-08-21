@@ -22,8 +22,8 @@ Route::group(['middleware' => ['api']], function () {
         Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::apiResource('product', ProductController::class)->only(['index', 'show']);
             Route::apiResource('cart', CartController::class);
-            Route::get('total', [CartController::class, 'total']);
-            Route::get('total-all', [CartController::class, 'totalAll']);
+            Route::get('cart-total', [CartController::class, 'total']);
+            Route::get('cart-total-all', [CartController::class, 'totalAll']);
             Route::post('order/add', [OrderController::class, 'addOrder']);
             Route::get('order/list', [OrderController::class, 'getList']);
             Route::get('order/total', [OrderController::class, 'getTotal']);
@@ -31,5 +31,6 @@ Route::group(['middleware' => ['api']], function () {
         });
 
         Route::post('create_token', [LoginController::class, 'login']);
+        Route::get('auth-failed', [LoginController::class, 'failed'])->name('login');
     });
 });
